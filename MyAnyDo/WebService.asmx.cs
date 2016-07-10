@@ -205,7 +205,36 @@ namespace MyAnyDo
         }
 
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void InsertTask(int categoryId, string name)
+        {
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "INSERT INTO Task (Name, CategoryId) VALUES (@Name, @CategoryId)";
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
 
+                }
+            }
+        }
 
     }
 
