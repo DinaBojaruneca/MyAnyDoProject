@@ -10,6 +10,7 @@ namespace MyAnyDo
         public int Id { set; get; }
         public string Name { set; get; }
         public int CategoryId { set; get; }
+        public string HighPriority { set; get; }
         public List<SubTask> SubTasks { set; get; }
         public List<Note> Notes { set; get; }
     }
