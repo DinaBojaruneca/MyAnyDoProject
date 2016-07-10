@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 using System.Configuration;
+using System.Web.Script.Services;
 
 namespace MyAnyDo
 {
@@ -169,8 +170,39 @@ namespace MyAnyDo
                     listCategories.Add(category);
                 }
             }
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Context.Response.Write(js.Serialize(listTasks));
         }
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void InsertCategory(string name)
+        {
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "INSERT INTO Category (Name) VALUES (@Name)";
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
+
+                }
+            }
+        }
 
 
 
