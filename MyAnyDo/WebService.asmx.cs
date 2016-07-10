@@ -332,6 +332,37 @@ namespace MyAnyDo
         }
 
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public int DeleteTask(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "DELETE FROM Task WHERE Id = " + id + "";
+                    int roweffected = cmd.ExecuteNonQuery();
+                    return roweffected;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
+
+                }
+            }
+        }
+
+
     }
 
         
