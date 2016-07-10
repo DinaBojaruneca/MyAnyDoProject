@@ -236,6 +236,42 @@ namespace MyAnyDo
             }
         }
 
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void InsertSubTask(string name, int taskId)
+        {
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "INSERT INTO SubTask (Name, TaskId) VALUES (@Name, @TaskId)";
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@TaskId", taskId);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
+
+                }
+            }
+        }
+
+
+
+
+
     }
 
         
