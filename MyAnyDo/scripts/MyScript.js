@@ -16,9 +16,6 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         });
     };
 
-    //refresh data
-    $scope.Refresh = function(){
-        loadData();
-    };
+    
 
 });
