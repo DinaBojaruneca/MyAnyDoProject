@@ -30,7 +30,7 @@ namespace MyAnyDo
 
             using (SqlConnection con = new SqlConnection(connstring))
             {
-                SqlCommand cmd = new SqlCommand("Select * from Category; Select * from Task; Select * from SubTask; Select * from Note", con);
+                SqlCommand cmd = new SqlCommand("Select * from Category; Select * from Task", con);
                 SqlDataAdapter adap = new SqlDataAdapter(cmd);
                 DataSet ds = new DataSet();
                 adap.Fill(ds);
@@ -45,9 +45,7 @@ namespace MyAnyDo
                     dataViewTasks.RowFilter = "CategoryId = '" + category.Id + "'";
 
                     List<Task> listTasks = new List<Task>();
-                    DataView dataViewSubTask = new DataView(ds.Tables[2]);
-                    DataView dataViewNote = new DataView(ds.Tables[3]);
-
+                    
                     foreach (DataRowView taskDataRowView in dataViewTasks)
                     {
                         DataRow taskDataRow = taskDataRowView.Row;
@@ -56,37 +54,8 @@ namespace MyAnyDo
                         task.Name = taskDataRow["Name"].ToString();
                         task.CategoryId = Convert.ToInt32(taskDataRow["CategoryId"]);
                         task.HighPriority = taskDataRow["HighPriority"].ToString();
-
-                        dataViewSubTask.RowFilter = "TaskId = '" + task.Id + "'";
-                        dataViewNote.RowFilter = "TaskId = '" + task.Id + "'";
-
-                        List<SubTask> listSubTasks = new List<SubTask>();
-                        List<Note> listNotes = new List<Note>();
-
-                        foreach (DataRowView subTaskDataRowView in dataViewSubTask)
-                        {
-                            DataRow subTaskDataRow = subTaskDataRowView.Row;
-                            SubTask subTask = new SubTask();
-                            subTask.Id = Convert.ToInt32(subTaskDataRow["Id"]);
-                            subTask.Name = subTaskDataRow["Name"].ToString();
-                            subTask.TaskId = Convert.ToInt32(subTaskDataRow["TaskId"]);
-
-                            listSubTasks.Add(subTask);
-                        }
-
-                        foreach (DataRowView noteDataRowView in dataViewNote)
-                        {
-                            DataRow noteDataRow = noteDataRowView.Row;
-                            Note note = new Note();
-                            note.Id = Convert.ToInt32(noteDataRow["Id"]);
-                            note.Name = noteDataRow["Name"].ToString();
-                            note.TaskId = Convert.ToInt32(noteDataRow["TaskId"]);
-
-                            listNotes.Add(note);
-                        }
-
-                        task.SubTasks = listSubTasks;
-                        task.Notes = listNotes;
+                        task.TimeId = Convert.ToInt32(taskDataRow["TimeId"]);
+                                               
                         listTasks.Add(task);
                     }
 
@@ -132,6 +101,7 @@ namespace MyAnyDo
                         task.Name = taskDataRow["Name"].ToString();
                         task.CategoryId = Convert.ToInt32(taskDataRow["CategoryId"]);
                         task.HighPriority = taskDataRow["HighPriority"].ToString();
+                        task.TimeId = Convert.ToInt32(taskDataRow["TimeId"]);
 
                         dataViewSubTask.RowFilter = "TaskId = '" + task.Id + "'";
                         dataViewNote.RowFilter = "TaskId = '" + task.Id + "'";

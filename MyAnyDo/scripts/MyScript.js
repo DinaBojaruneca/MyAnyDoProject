@@ -6,16 +6,32 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
 
     //read data from database
     function loadData() {
-        $http.get("TaskService.asmx/GetCategory")
+        $http.get("WebService.asmx/GetCategory")
        .then(function (response) {
            $scope.categories = response.data;
        });
-        $http.get("TaskService.asmx/GetTask")
+        $http.get("WebService.asmx/GetTask")
         .then(function (response) {
-            $skope.tasks = response.data;
+            $scope.tasks = response.data;
         });
     };
 
+    $scope.mode = "categ";
+
+    $scope.SetModeValue = function (value) {
+        $scope.mode = value;        
+    }
     
+    //insert category to database
+    $scope.insertCategory = function () {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/InsertCategory',
+            data: { name: $scope.CategoryName },
+            headers: { 'content-type': 'application/json' }
+        });
+        loadData();
+        $scope.mode = "categ";
+    };
 
 });

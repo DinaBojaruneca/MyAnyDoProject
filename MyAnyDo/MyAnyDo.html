@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="myAnyDoApp">
+<head>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/MyScript.js"></script>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body ng-controller="myAppCtrl" >
+    <div  ng-switch on="mode">
+        
+        <!--Category view-->
+        <div class="well" ng-switch-when="categ">
+            <table class="table">
+                <tr>
+                    <td align="center" ng-click="SetModeValue('addcateg')">+</td>
+                </tr>
+                <tr ng-repeat="category in categories">
+                    <td ng-click="SetCat(category.Id, category.Name, 'tasks')" align="center">{{category.Name}}</td>
+                    <td>
+                        <input type="button" id="btnDeleteCat" value="DeleteCategory" ng-click="deleteCategory(category.Id)" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Add category viewe -->
+        <div ng-switch-when="addcateg" id="addController">
+            <div class="well">
+                <input type="text" id="txtCategoryName" ng-model="$parent.CategoryName" />
+                <input type="button" id="btnAddCat" value="InsertCategory" ng-click="insertCategory()" />
+
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
