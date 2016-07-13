@@ -3,6 +3,8 @@
 <head>
     <script src="scripts/angular.min.js"></script>
     <script src="scripts/MyScript.js"></script>
+    <link href="scripts/bootstrap-theme.css" rel="stylesheet" />
+    <link href="scripts/bootstrap.css" rel="stylesheet" />
     <title></title>
 	<meta charset="utf-8" />
 </head>
@@ -16,7 +18,7 @@
                     <td align="center" ng-click="SetModeValue('addcateg')">+</td>
                 </tr>
                 <tr ng-repeat="category in categories">
-                    <td ng-click="SetCat(category.Id, category.Name, 'tasks')" align="center">{{category.Name}}</td>
+                    <td ng-click="SetCatAndMode(category.Id, category.Name, 'taskView')" align="center">{{category.Name}}</td>
                     <td>
                         <input type="button" id="btnDeleteCat" value="DeleteCategory" ng-click="deleteCategory(category.Id)" />
                     </td>
@@ -31,6 +33,84 @@
                 <input type="button" id="btnAddCat" value="InsertCategory" ng-click="insertCategory()" />
 
             </div>
+        </div>
+
+        <!--Task viewe-->
+        <div ng-switch-when="taskView">            
+                <button ng-click="SetModeValue('categ', 'time')">To categories</button>
+
+            <h1>{{CatName}}</h1>
+            <div class="container">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="SetVieweValue('list')">List</button>
+                    <button class="btn btn-default" ng-click="SetVieweValue('time')">Time</button>
+                    <button class="btn btn-default" ng-click="SetVieweValue('priority')">Priority</button>
+                </div>
+            </div>
+            <div ng-switch on="viewe">
+
+                <!--//list view-->
+                <ul class="list-group" ng-switch-when="list">
+                    <li ng-repeat="task in tasks | filter : FilterTasks">{{task.Name}}</li>
+                </ul>
+
+                <!--//time view-->
+                <table class="table" ng-switch-when="time">
+                    <tr>
+                        <td ng-repeat="time in times">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>{{time.Name}}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="task in time.Tasks | filter:FilterTasks |filter:{TimeId:time.Id}">
+                                        <td>{{task.Name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!--//priority view-->
+                <table class="table" ng-switch-when="priority">
+                    <tr>
+                        <td>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>HighPiority</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'True'}">
+                                        <td>{{task.Name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Normal</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'False'}">
+                                        <td>{{task.Name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+            
         </div>
 
 

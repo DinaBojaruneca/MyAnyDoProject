@@ -14,12 +14,17 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         .then(function (response) {
             $scope.tasks = response.data;
         });
+        $http.get("WebService.asmx/GetTaskByTime")
+           .then(function (response) {
+               $scope.times = response.data;
+           });
     };
 
     $scope.mode = "categ";
 
-    $scope.SetModeValue = function (value) {
-        $scope.mode = value;        
+    $scope.SetModeValue = function (value, vieweValue) {
+        $scope.mode = value;
+        $scope.viewe = vieweValue;
     }
     
     //insert category to database
@@ -33,5 +38,25 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         loadData();
         $scope.mode = "categ";
     };
+
+    $scope.CatName = 0;
+    $scope.CatId = 0;
+
+    $scope.SetCatAndMode = function (id, name, modeValue) {
+        $scope.CatId = id;
+        $scope.CatName = name;
+        $scope.mode = modeValue;
+    }
+
+    $scope.viewe = "time";
+    $scope.SetVieweValue = function (value) {
+        $scope.viewe = value;
+    }
+
+    //filter by category Id
+    $scope.FilterTasks = function (task) {
+        return task.CategoryId == $scope.CatId;
+    }
+
 
 });

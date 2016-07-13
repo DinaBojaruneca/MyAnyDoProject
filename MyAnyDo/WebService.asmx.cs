@@ -173,7 +173,52 @@ namespace MyAnyDo
                 }
             }
         }
+        
 
+        [WebMethod]
+        public void GetTaskByTime()
+        {
+            List<Time> listTimes = new List<Time>();
+
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand("Select * from Time; Select * from Task", con);
+                SqlDataAdapter adap = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adap.Fill(ds);
+
+                DataView dataViewTasks = new DataView(ds.Tables[1]);
+                foreach (DataRow timeDataRow in ds.Tables[0].Rows)
+                {
+                    Time time = new Time();
+                    time.Id = Convert.ToInt32(timeDataRow["Id"]);
+                    time.Name = timeDataRow["Name"].ToString();
+
+                    dataViewTasks.RowFilter = "TimeId = '" + time.Id + "'";
+
+                    List<Task> listTasks = new List<Task>();                   
+
+                    foreach (DataRowView taskDataRowView in dataViewTasks)
+                    {
+                        DataRow taskDataRow = taskDataRowView.Row;
+                        Task task = new Task();
+                        task.Id = Convert.ToInt32(taskDataRow["Id"]);
+                        task.Name = taskDataRow["Name"].ToString();
+                        task.CategoryId = Convert.ToInt32(taskDataRow["CategoryId"]);
+                        task.HighPriority = taskDataRow["HighPriority"].ToString();
+                        task.TimeId = Convert.ToInt32(taskDataRow["TimeId"]);
+                                              
+                        listTasks.Add(task);
+                    }
+
+                    time.Tasks = listTasks;
+                    listTimes.Add(time);
+                }
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Context.Response.Write(js.Serialize(listTimes));
+        }
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
