@@ -51,9 +51,8 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         loadData();
     };
 
-    $scope.CatName = 0;
-    $scope.CatId = 0;
-
+    $scope.CatName;
+    $scope.CatId;
     $scope.SetCatAndMode = function (id, name, modeValue) {
         $scope.CatId = id;
         $scope.CatName = name;
@@ -68,6 +67,24 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
     //filter by category Id
     $scope.FilterTasks = function (task) {
         return task.CategoryId == $scope.CatId;
+    }
+
+    $scope.TaskId;
+    $scope.TaskName;
+    $scope.SetTaskAndMode = function (id, name, modeVal) {
+        $scope.TaskId = id;
+        $scope.TaskName = name;
+        $scope.mode = modeVal;
+    }
+
+    $scope.Tveiwe = "subTask";
+    $scope.SetTveiwe = function (value) {
+        $scope.Tveiwe = value;
+    }
+
+    //filter by task Id
+    $scope.FilterSubTasks = function (subtask) {
+        return subtask.TaskId == $scope.TaskId;
     }
 
 

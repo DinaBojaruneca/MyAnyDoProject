@@ -47,8 +47,8 @@
         <!--Task viewe-->
         <div ng-switch-when="taskView">            
             <button ng-click="SetModeValue('categ', 'time')">To categories</button>
-           
-            <input type="text" placeholder="Search" ng-model="SearchText" /> 
+            
+                <input type="text" placeholder="Search" ng-model="SearchText" />                      
 
             <h1>{{CatName}}</h1>
             <div class="container">
@@ -62,7 +62,7 @@
 
                 <!--//list view-->
                 <ul class="list-group" ng-switch-when="list">
-                    <li ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">{{task.Name}}</li>
+                    <li ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView')" ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">{{task.Name}}</li>
                 </ul>
 
                 <!--//time view-->
@@ -117,13 +117,29 @@
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
-            </div>
-            
+            </div>            
         </div>
 
+        <!-- SubTask View -->
+        <div ng-switch-when="subTaskView">
+            <button ng-click="SetModeValue('taskView', 'time')">To tasks</button>
+            <h1>{{TaskName}}</h1>
+            <br/>
+            <h3>{{CatName}}</h3>
+            <br/>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="">Notes</button>
+                <button class="btn btn-default" ng-click="">SubTasks</button>                
+            </div>
+            <div ng-switch on="Tviewe">
+                <ul class="list-group" ng-switch-when="subTask">
+                    <li ng-click="" ng-repeat="subtask in task.SubTasks | filter : FilterSubTasks">{{subTask.Name}}</li>
+                </ul>
+
+            </div>
+
+        </div>
 
     </div>
 </body>
