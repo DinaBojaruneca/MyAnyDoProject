@@ -39,6 +39,18 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         $scope.mode = "categ";
     };
 
+    //delete category from database
+    $scope.deleteCategory = function (catId) {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/DeleteCategory',
+            data: { id: catId },
+            headers: { 'content-type': 'application/json' }
+        });
+        loadData();
+        $scope.mode = "categ";
+    };
+
     $scope.CatName = 0;
     $scope.CatId = 0;
 
