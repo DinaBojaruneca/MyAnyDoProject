@@ -13,14 +13,14 @@
         
         <!--Category view-->
         <div class="well" ng-switch-when="categ">
-            <table class="table">
+            <table class="table" >
                 <tr>
                     <td align="center" ng-click="SetModeValue('addcateg')">+</td>
                 </tr>
                 <tr ng-repeat="category in categories">
                     <td ng-click="SetCatAndMode(category.Id, category.Name, 'taskView')" align="center">{{category.Name}}</td>
                     <td>
-                        <input type="button" id="btnDeleteCat" value="DeleteCategory" ng-click="deleteCategory(category.Id)" />
+                        <button class="btn btn-default" id="btnDeleteCat" ng-click="SetCatAndMode(category.Id, category.Name, 'delcateg')" >DeleteCategory</button>
                     </td>
                 </tr>
             </table>
@@ -30,14 +30,25 @@
         <div ng-switch-when="addcateg" id="addController">
             <div class="well">
                 <input type="text" id="txtCategoryName" ng-model="$parent.CategoryName" />
-                <input type="button" id="btnAddCat" value="InsertCategory" ng-click="insertCategory()" />
+                <button class="btn btn-default" id="btnAddCat" ng-click="InsertCategory()" >InsertCategory</button>
+            </div>
+        </div>
 
+        <!--Delete category view-->
+        <div ng-switch-when="delcateg">
+            <h3>Are you shure you want to delete this list?</h3>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="SetModeValue('categ')">Cancel</button>
+                <button class="btn btn-default" ng-click="DeleteCategory()">Delete</button>
+                
             </div>
         </div>
 
         <!--Task viewe-->
         <div ng-switch-when="taskView">            
-                <button ng-click="SetModeValue('categ', 'time')">To categories</button>
+            <button ng-click="SetModeValue('categ', 'time')">To categories</button>
+           
+            <input type="text" placeholder="Search" ng-model="SearchText" /> 
 
             <h1>{{CatName}}</h1>
             <div class="container">
@@ -51,7 +62,7 @@
 
                 <!--//list view-->
                 <ul class="list-group" ng-switch-when="list">
-                    <li ng-repeat="task in tasks | filter : FilterTasks">{{task.Name}}</li>
+                    <li ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">{{task.Name}}</li>
                 </ul>
 
                 <!--//time view-->
@@ -65,7 +76,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="task in time.Tasks | filter:FilterTasks |filter:{TimeId:time.Id}">
+                                    <tr ng-repeat="task in time.Tasks | filter:FilterTasks |filter:{TimeId:time.Id} | filter : SearchText">
                                         <td>{{task.Name}}</td>
                                     </tr>
                                 </tbody>
@@ -85,7 +96,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'True'}">
+                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'True'} | filter : SearchText">
                                         <td>{{task.Name}}</td>
                                     </tr>
                                 </tbody>
@@ -99,7 +110,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'False'}">
+                                    <tr ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'False'} | filter : SearchText">
                                         <td>{{task.Name}}</td>
                                     </tr>
                                 </tbody>

@@ -28,27 +28,27 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
     }
     
     //insert category to database
-    $scope.insertCategory = function () {
+    $scope.InsertCategory = function () {
         $http({
             method: 'POST',
             url: 'WebService.asmx/InsertCategory',
             data: { name: $scope.CategoryName },
             headers: { 'content-type': 'application/json' }
-        });
-        loadData();
+        });        
         $scope.mode = "categ";
+        loadData();
     };
 
     //delete category from database
-    $scope.deleteCategory = function (catId) {
+    $scope.DeleteCategory = function () {
         $http({
             method: 'POST',
             url: 'WebService.asmx/DeleteCategory',
-            data: { id: catId },
+            data: { id: $scope.CatId },
             headers: { 'content-type': 'application/json' }
-        });
-        loadData();
+        });       
         $scope.mode = "categ";
+        loadData();
     };
 
     $scope.CatName = 0;
