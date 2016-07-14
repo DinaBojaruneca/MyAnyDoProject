@@ -105,6 +105,7 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
     $scope.TimeId;
     $scope.HighPriority;
     $scope.SubTaskName;
+    $scope.Note;
 
     $scope.SetTaskAndMode = function (id, name, modeVal) {
         $scope.TaskId = id;
@@ -147,6 +148,21 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
             });
         $scope.mode = "subTaskView";
         $scope.SubTaskName = "";
+    }
+
+    //insert Note
+    $scope.InsertNote = function () {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/InsertNote',
+            data: { 'name': $scope.Note, 'taskId': $scope.TaskId },
+            headers: { 'content-type': 'application/json' }
+        })
+            .success(function () {
+                loadData();
+            });
+        $scope.mode = "subTaskView";
+        $scope.Note = "";
     }
 
     $scope.Tveiwe = "subTask";
