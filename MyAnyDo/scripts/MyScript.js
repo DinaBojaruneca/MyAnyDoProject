@@ -191,7 +191,22 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         .success(function () {
             loadData();
         });
-
         $scope.mode = "subTaskView";        
     }
+
+    //delete Note
+    $scope.DeleteNote = function (Id) {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/DeleteNote',
+            data: { id: Id },
+            headers: { 'content-type': 'application/json' }
+        })
+        .success(function () {
+            loadData();
+        });
+        $scope.mode = "subTaskView";
+    }
+
+
 });

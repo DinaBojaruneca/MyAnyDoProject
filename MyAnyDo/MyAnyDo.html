@@ -188,7 +188,7 @@
                     <li ng-click="SetModeValue('addNote')">+</li>
                     <li ng-repeat="note in notes | filter : FilterNotes">
                     {{note.Name}}
-                        <input type="button" value="Delete Note" ng-click="DeleteNote()"/>
+                        <input type="button" value="Delete Note" ng-click="DeleteNote(note.Id)"/>
                     </li>
                 </ul>
             </div>
