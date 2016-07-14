@@ -176,26 +176,32 @@
             <div ng-switch on="Tveiwe">
                 <!-- subtask viewe -->
                 <ul class="list-group" ng-switch-when="subTask">
-                    <li ng-click="">+</li>
-                    <li ng-click="" ng-repeat="subtask in subtasks | filter : FilterSubTasks">{{subtask.Name}}</li>
+                    <li ng-click="SetModeValue('addSubtask')">+</li>
+                    <li ng-repeat="subtask in subtasks | filter : FilterSubTasks">{{subtask.Name}}</li>
                 </ul>
                 <!-- Note viewe -->
                 <ul class="list-group" ng-switch-when="notes">
-                    <li ng-click="">+</li>
-                    <li ng-click="" ng-repeat="note in notes | filter : FilterNotes">{{note.Name}}</li>
+                    <li ng-click="SetModeValue('addNote')">+</li>
+                    <li ng-repeat="note in notes | filter : FilterNotes">{{note.Name}}</li>
                 </ul>
             </div>
 
         </div>
 
-        <!-- Add subtask Viewe -->
+        <!-- AddSubtask Viewe -->
         <div ng-switch-when="addSubtask">
-
+            <div class="well">
+                <input type="text" ng-model="$parent.SubTaskName" />
+                <button class="btn btn-default" id="btnAddSubTask" ng-click="InsertSubTask()">InsertSubTask</button>
+            </div>
         </div>
 
-        <!-- Add subtask Viewe -->
+        <!-- AddNote Viewe -->
         <div ng-switch-when="addNote">
-
+            <div class="well">
+                <input type="text" ng-model="$parent.Note" />
+                <button class="btn btn-default" id="btnAddNote" ng-click="InsertNote()">InsertNote</button>
+            </div>
         </div>
 
     </div>
