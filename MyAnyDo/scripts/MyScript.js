@@ -180,4 +180,18 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         return note.TaskId == $scope.TaskId;
     }
     
+    //delete Subtask
+    $scope.DeleteSubtask = function (Id) {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/DeleteSubTask',
+            data: { id: Id },
+            headers: { 'content-type': 'application/json' }
+        })
+        .success(function () {
+            loadData();
+        });
+
+        $scope.mode = "subTaskView";        
+    }
 });

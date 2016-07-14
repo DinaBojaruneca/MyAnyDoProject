@@ -178,12 +178,18 @@
                 <!-- subtask viewe -->
                 <ul class="list-group" ng-switch-when="subTask">
                     <li ng-click="SetModeValue('addSubtask')">+</li>
-                    <li ng-repeat="subtask in subtasks | filter : FilterSubTasks">{{subtask.Name}}</li>
+                    <li ng-repeat="subtask in subtasks | filter : FilterSubTasks">
+                    {{subtask.Name}}
+                        <input type="button" value="Delete Subtask" ng-click="DeleteSubtask(subtask.Id)"/>
+                    </li>
                 </ul>
                 <!-- Note viewe -->
                 <ul class="list-group" ng-switch-when="notes">
                     <li ng-click="SetModeValue('addNote')">+</li>
-                    <li ng-repeat="note in notes | filter : FilterNotes">{{note.Name}}</li>
+                    <li ng-repeat="note in notes | filter : FilterNotes">
+                    {{note.Name}}
+                        <input type="button" value="Delete Note" ng-click="DeleteNote()"/>
+                    </li>
                 </ul>
             </div>
 
