@@ -18,7 +18,16 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
            .then(function (response) {
                $scope.times = response.data;
            });
+        $http.get("WebService.asmx/GetSubTask")
+           .then(function (response) {
+               $scope.subtasks = response.data;
+           });
+        $http.get("WebService.asmx/GetNote")
+           .then(function (response) {
+               $scope.notes = response.data;
+           });
     };
+      
 
     $scope.mode = "categ";
 
@@ -34,9 +43,12 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
             url: 'WebService.asmx/InsertCategory',
             data: { name: $scope.CategoryName },
             headers: { 'content-type': 'application/json' }
-        });        
+        })
+            .success(function () {
+            loadData();
+        });
         $scope.mode = "categ";
-        loadData();
+        
     };
 
     //delete category from database
@@ -46,9 +58,28 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
             url: 'WebService.asmx/DeleteCategory',
             data: { id: $scope.CatId },
             headers: { 'content-type': 'application/json' }
-        });       
-        $scope.mode = "categ";
-        loadData();
+        })
+        .success(function () {
+            loadData();
+        });
+        $scope.mode = "categ";        
+    };
+
+    //delete Task from database
+    $scope.DeleteTask = function () {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/DeleteTask',
+            data: { id: $scope.TaskId },
+            headers: { 'content-type': 'application/json' }
+        })
+        .success(function () {
+            loadData();
+        });
+       
+        $scope.mode = "taskView";
+        $scope.viewe = "list";
+        
     };
 
     $scope.CatName;
@@ -71,10 +102,35 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
 
     $scope.TaskId;
     $scope.TaskName;
+    $scope.TimeId;
+    $scope.HighPriority;
+
     $scope.SetTaskAndMode = function (id, name, modeVal) {
         $scope.TaskId = id;
         $scope.TaskName = name;
         $scope.mode = modeVal;
+    }
+
+    $scope.SetTimePriorMode = function (timeId, Hp, modeValue) {
+        $scope.TimeId=timeId;
+        $scope.HighPriority=Hp;
+        $scope.mode = modeValue;
+       
+    }
+
+    // insert Task to database
+    $scope.InsertTask = function () {
+        $http({
+            method: 'POST',
+            url: 'WebService.asmx/InsertTask',
+            data: { 'name': $scope.TaskName, 'categoryId': $scope.CatId, 'timeId': $scope.TimeId, 'highPri': $scope.HighPriority },
+            headers: { 'content-type': 'application/json' }
+        })
+            .success(function () {
+                loadData();
+            });
+        $scope.mode = "taskView";
+        $scope.TaskName = "";
     }
 
     $scope.Tveiwe = "subTask";
@@ -82,10 +138,14 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
         $scope.Tveiwe = value;
     }
 
-    //filter by task Id
+    //filter subtasks by task Id
     $scope.FilterSubTasks = function (subtask) {
         return subtask.TaskId == $scope.TaskId;
     }
 
-
+    //filter notes by task Id
+    $scope.FilterNotes = function (note) {
+        return note.TaskId == $scope.TaskId;
+    }
+    
 });

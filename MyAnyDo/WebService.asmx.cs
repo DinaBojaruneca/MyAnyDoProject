@@ -126,6 +126,33 @@ namespace MyAnyDo
             Context.Response.Write(js.Serialize(listSubTasks));
         }
 
+        [WebMethod]
+        public void GetNote()
+        {
+            List<Note> listNotes = new List<Note>();
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand(" Select * from Note", con);
+                SqlDataAdapter adap = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adap.Fill(ds);
+
+                DataView dataViewNote = new DataView(ds.Tables[0]);
+                foreach (DataRowView noteDataRowView in dataViewNote)
+                {
+                    DataRow noteDataRow = noteDataRowView.Row;
+                    Note note = new Note();
+                    note.Id = Convert.ToInt32(noteDataRow["Id"]);
+                    note.Name = noteDataRow["Name"].ToString();
+                    note.TaskId = Convert.ToInt32(noteDataRow["TaskId"]);
+
+                    listNotes.Add(note);
+                }
+            }
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Context.Response.Write(js.Serialize(listNotes));
+        }
+
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -203,9 +230,9 @@ namespace MyAnyDo
             Context.Response.Write(js.Serialize(listTimes));
         }
 
-        [WebMethod]
+        [WebMethod]            
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public void InsertTask(int categoryId, string name)
+        public void InsertTask(int categoryId, string name, int timeId, int highPri)
         {
             using (SqlConnection con = new SqlConnection(connstring))
             {
@@ -214,9 +241,11 @@ namespace MyAnyDo
                 {
                     con.Open();
                     cmd = con.CreateCommand();
-                    cmd.CommandText = "INSERT INTO Task (Name, CategoryId) VALUES (@Name, @CategoryId)";
+                    cmd.CommandText = "INSERT INTO Task (Name, CategoryId, TimeId, HighPriority) VALUES (@Name, @CategoryId, @TimeId, @HighPriority)";
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                    cmd.Parameters.AddWithValue("@TimeId", timeId);
+                    cmd.Parameters.AddWithValue("@HighPriority", highPri);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception)
