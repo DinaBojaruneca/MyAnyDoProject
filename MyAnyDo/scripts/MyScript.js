@@ -48,7 +48,8 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
             loadData();
         });
         $scope.mode = "categ";
-        
+        $scope.viewe = "time";
+        $scope.CategoryName = "";
     };
 
     //delete category from database
