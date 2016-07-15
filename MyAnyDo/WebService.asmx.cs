@@ -452,7 +452,37 @@ namespace MyAnyDo
         }
 
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public int SetAsHighPriority(int id, int value)
+        {
+            using (SqlConnection con = new SqlConnection(connstring))
+            {
+                SqlCommand cmd = new SqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "UPDATE Task SET HighPriority="+value+"  WHERE Id = "+id+"";
+                    //cmd.Parameters.AddWithValue("@value", value);
+                    //cmd.Parameters.AddWithValue("@TaskId", id);
+                    int roweffected = cmd.ExecuteNonQuery();
+                    return roweffected;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
 
+                }
+            }
+        }
 
     }        
 }

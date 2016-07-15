@@ -106,11 +106,42 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
     $scope.HighPriority;
     $scope.SubTaskName;
     $scope.Note;
+    
 
-    $scope.SetTaskAndMode = function (id, name, modeVal) {
+    $scope.SetTaskAndMode = function (id, name, modeVal, highPr) {
         $scope.TaskId = id;
         $scope.TaskName = name;
         $scope.mode = modeVal;
+        $scope.HighPriority = highPr;
+    }
+
+    $scope.CheckHighPrior = function () {
+        return $scope.HighPriority == 'True';
+    }
+
+    $scope.ChangePriority = function () {
+        if ($scope.HighPriority == 'True') {
+            $http({
+                method: 'POST',
+                url: 'WebService.asmx/SetAsHighPriority',
+                data: { 'id': $scope.TaskId, 'value':'0' },
+                headers: { 'content-type': 'application/json' }
+            })
+            .success(function () {
+                loadData();
+            });
+        }
+        else {
+            $http({
+                method: 'POST',
+                url: 'WebService.asmx/SetAsHighPriority',
+                data: { 'id': $scope.TaskId, 'value': '1' },
+                headers: { 'content-type': 'application/json' }
+            })
+            .success(function () {
+                loadData();
+            });
+        }
     }
 
     $scope.SetTimePriorMode = function (timeId, Hp, modeValue) {

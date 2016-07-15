@@ -74,9 +74,9 @@
                 <!--//list view-->
                 <ul class="list-group" ng-switch-when="list">
                     <li ng-click="SetTimePriorMode('1','0','addtask')">+</li>
-                    <li ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView')" ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">
-                    {{task.Name}}
-                        <button style="padding-left:20em" class="btn btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
+                    <li ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView', task.HighPriority)" ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">
+                    {{task.Name}}, {{task.HighPriority}}
+                        <button class="btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
                     </li>
                 </ul>
 
@@ -94,10 +94,10 @@
                                     <tr>
                                         <td ng-click="SetTimePriorMode(time.Id,'0','addtask')">+</td>
                                     </tr>
-                                    <tr ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView')" ng-repeat="task in time.Tasks | filter:FilterTasks |filter:{TimeId:time.Id} | filter : SearchText">
+                                    <tr ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView', task.HighPriority)" ng-repeat="task in time.Tasks | filter:FilterTasks |filter:{TimeId:time.Id} | filter : SearchText">
                                         <td>
-                                            {{task.Name}}
-                                            <button style="padding-left:20em" class="btn btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
+                                            {{task.Name}}, {{task.HighPriority}}
+                                            <button class="btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -120,10 +120,10 @@
                                     <tr>
                                         <td ng-click="SetTimePriorMode('1','1','addtask')">+</td>
                                     </tr>
-                                    <tr ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView')" ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'True'} | filter : SearchText">
+                                    <tr ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView', task.HighPriority)" ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'True'} | filter : SearchText">
                                         <td>
                                         {{task.Name}}
-                                            <button style="padding-left:20em" class="btn btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
+                                            <button class="btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -143,7 +143,7 @@
                                     <tr ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView')" ng-repeat="task in tasks | filter:FilterTasks | filter:{HighPriority:'False'} | filter : SearchText">
                                         <td>
                                         {{task.Name}}
-                                            <button style="padding-left:20em" class="btn btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
+                                            <button class="btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -163,18 +163,23 @@
         </div>
 
         <!-- SubTask View -->
-        <div ng-switch-when="subTaskView">
+        <div class="container" ng-switch-when="subTaskView">
             <button ng-click="SetModeValue('taskView', 'time')">To tasks</button>
             <h1>{{TaskName}}</h1>
             <br/>
-            <h3>{{CatName}}</h3>
+            <h3>{{CatName}}</h3>            
+            <lable>
+                <input type="checkbox" ng-checked="CheckHighPrior()" ng-click="ChangePriority()" />
+                Set as HighPriority
+            </lable>
+            
             <br/>
-
+            <br/>
             <div class="btn-group">
                 <button class="btn btn-default" ng-click="SetTveiwe('notes')">Notes</button>
                 <button class="btn btn-default" ng-click="SetTveiwe('subTask')">SubTasks</button>                
             </div>
-            <div ng-switch on="Tveiwe">
+            <div class="container" ng-switch on="Tveiwe">
                 <!-- subtask viewe -->
                 <ul class="list-group" ng-switch-when="subTask">
                     <li ng-click="SetModeValue('addSubtask')">+</li>
