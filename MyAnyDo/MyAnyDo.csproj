@@ -94,7 +94,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MyAnyDo.html" />
+    <Content Include="Index.html" />
     <Content Include="scripts\bootstrap-theme.css" />
     <Content Include="scripts\bootstrap.css" />
     <Content Include="scripts\MyScript.js" />
