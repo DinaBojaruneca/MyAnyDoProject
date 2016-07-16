@@ -34,32 +34,13 @@ namespace MyAnyDo
                 SqlDataAdapter adap = new SqlDataAdapter(cmd);
                 DataSet ds = new DataSet();
                 adap.Fill(ds);
-
-                //DataView dataViewTasks = new DataView(ds.Tables[1]);
+                
                 foreach (DataRow categoryDataRow in ds.Tables[0].Rows)
                 {
                     Category category = new Category();
                     category.Id = Convert.ToInt32(categoryDataRow["Id"]);
                     category.Name = categoryDataRow["Name"].ToString();
 
-                    //dataViewTasks.RowFilter = "CategoryId = '" + category.Id + "'";
-
-                    //List<Task> listTasks = new List<Task>();
-                    
-                    //foreach (DataRowView taskDataRowView in dataViewTasks)
-                    //{
-                    //    DataRow taskDataRow = taskDataRowView.Row;
-                    //    Task task = new Task();
-                    //    task.Id = Convert.ToInt32(taskDataRow["Id"]);
-                    //    task.Name = taskDataRow["Name"].ToString();
-                    //    task.CategoryId = Convert.ToInt32(taskDataRow["CategoryId"]);
-                    //    task.HighPriority = taskDataRow["HighPriority"].ToString();
-                    //    task.TimeId = Convert.ToInt32(taskDataRow["TimeId"]);
-                                               
-                    //    listTasks.Add(task);
-                    //}
-
-                    //category.Tasks = listTasks;
                     listCategories.Add(category);
                 }
             }
@@ -91,8 +72,9 @@ namespace MyAnyDo
                         task.CategoryId = Convert.ToInt32(taskDataRow["CategoryId"]);
                         task.HighPriority = taskDataRow["HighPriority"].ToString();
                         task.TimeId = Convert.ToInt32(taskDataRow["TimeId"]);
-                                            
-                        listTasks.Add(task);
+                        task.CreationDate = Convert.ToDateTime(taskDataRow["CreationDate"]);
+
+                    listTasks.Add(task);
                     }                    
             }
             JavaScriptSerializer js = new JavaScriptSerializer();
@@ -234,6 +216,8 @@ namespace MyAnyDo
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void InsertTask(int categoryId, string name, int timeId, int highPri)
         {
+            DateTime date = DateTime.Now;
+
             using (SqlConnection con = new SqlConnection(connstring))
             {
                 SqlCommand cmd = new SqlCommand();
@@ -241,11 +225,12 @@ namespace MyAnyDo
                 {
                     con.Open();
                     cmd = con.CreateCommand();
-                    cmd.CommandText = "INSERT INTO Task (Name, CategoryId, TimeId, HighPriority) VALUES (@Name, @CategoryId, @TimeId, @HighPriority)";
+                    cmd.CommandText = "INSERT INTO Task (Name, CategoryId, TimeId, HighPriority, CreationDate) VALUES (@Name, @CategoryId, @TimeId, @HighPriority, @CreationDate)";
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@CategoryId", categoryId);
                     cmd.Parameters.AddWithValue("@TimeId", timeId);
                     cmd.Parameters.AddWithValue("@HighPriority", highPri);
+                    cmd.Parameters.AddWithValue("@CreationDate", date);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception)
@@ -463,9 +448,7 @@ namespace MyAnyDo
                 {
                     con.Open();
                     cmd = con.CreateCommand();
-                    cmd.CommandText = "UPDATE Task SET HighPriority="+value+"  WHERE Id = "+id+"";
-                    //cmd.Parameters.AddWithValue("@value", value);
-                    //cmd.Parameters.AddWithValue("@TaskId", id);
+                    cmd.CommandText = "UPDATE Task SET HighPriority="+value+"  WHERE Id = "+id+"";                    
                     int roweffected = cmd.ExecuteNonQuery();
                     return roweffected;
                 }

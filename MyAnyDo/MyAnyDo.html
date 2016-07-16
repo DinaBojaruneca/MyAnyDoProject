@@ -100,7 +100,7 @@
                             <td style="cursor:pointer" align="center" ng-click="SetTimePriorMode('1','0','addtask')">+</td>
                         </tr>
                         <tr ng-repeat="task in tasks | filter : FilterTasks | filter : SearchText">
-                            <td style="cursor:pointer" ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView', task.HighPriority)" >{{task.Name}}</td>
+                            <td style="cursor:pointer" ng-click="SetTaskAndMode(task.Id, task.Name, 'subTaskView', task.HighPriority, task.CreationDate)" >{{task.Name}}</td>
                             <td>
                                 <button class="btn btn-default" id="btnDeleteTask" ng-click="SetTaskAndMode(task.Id, task.Name, 'delTask')">DeleteTask</button>
                             </td>
@@ -206,6 +206,8 @@
             <h1>{{TaskName}}</h1>
             <br />
             <h3>{{CatName}}</h3>
+            <br />
+            <h3>{{$parent.CreationDate}}</h3>
             <lable>
                 <input type="checkbox" ng-checked="CheckHighPrior()" ng-click="ChangePriority()" />
                 Set as HighPriority
@@ -224,7 +226,7 @@
                 <div ng-switch-when="subTask">
                     <table class="table table-responsive">
                         <tr>
-                            <td style="cursor:pointer" align="center" ng-click="SetModeValue('addSubtask')">+</td>
+                            <td style="cursor:pointer" align="center"  ng-click="SetModeValue('addSubtask')">+ Add subtask</td>
                         </tr>
                         <tr ng-repeat="subtask in subtasks | filter : FilterSubTasks">
                             <td >{{subtask.Name}}</td>
@@ -239,7 +241,7 @@
                 <div ng-switch-when="notes">
                     <table class="table table-responsive">
                         <tr>
-                            <td style="cursor:pointer" align="center" ng-click="SetModeValue('addNote')">+</td>
+                            <td style="cursor:pointer" align="center" ng-click="SetModeValue('addNote')">+ Add Note</td>
                         </tr>
                         <tr ng-repeat="note in notes | filter : FilterNotes">
                             <td>{{note.Name}}</td>

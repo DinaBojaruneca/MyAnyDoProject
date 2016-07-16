@@ -12,6 +12,7 @@ namespace MyAnyDo
         public int CategoryId { set; get; }
         public string HighPriority { set; get; }
         public int TimeId { set; get; }
+        public DateTime CreationDate { set; get; }
         public List<SubTask> SubTasks { set; get; }
         public List<Note> Notes { set; get; }
     }

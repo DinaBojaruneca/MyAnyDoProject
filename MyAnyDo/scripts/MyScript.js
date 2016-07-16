@@ -1,7 +1,7 @@
 ﻿/// <reference path="C:\Users\dinab\Desktop\MyAnyDo\MyAnyDo\scripts/angular.min.js" />
 
 var myAnyDoApp = angular.module("myAnyDoApp", []);
-myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
+myAnyDoApp.controller("myAppCtrl", function ($scope, $http, $filter) {
     loadData();
 
     //read data from database
@@ -107,13 +107,15 @@ myAnyDoApp.controller("myAppCtrl", function ($scope, $http) {
     $scope.HighPriority;
     $scope.SubTaskName;
     $scope.Note;
-    
+    $scope.CreationDate;
+    //dateAsString = $filter('date')($scope.CreationDate, "yyyy-MM-dd");
 
-    $scope.SetTaskAndMode = function (id, name, modeVal, highPr) {
+    $scope.SetTaskAndMode = function (id, name, modeVal, highPr, crDate) {
         $scope.TaskId = id;
         $scope.TaskName = name;
         $scope.mode = modeVal;
         $scope.HighPriority = highPr;
+        $scope.CreationDate = crDate;
     }
 
     $scope.CheckHighPrior = function () {
